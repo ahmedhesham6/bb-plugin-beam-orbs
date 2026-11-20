@@ -86,14 +86,14 @@
 
 [data-beam-orbs-beam="on"] {
   animation:
-    beam-orbs-md-spin 1.96s linear infinite,
-    beam-orbs-md-fade-in 0.6s ease forwards;
+    beam-orbs-md-spin 9s linear infinite,
+    beam-orbs-md-fade-in 1.2s ease-out forwards;
 }
 
 [data-beam-orbs-beam="off"] {
   animation:
-    beam-orbs-md-spin 1.96s linear infinite,
-    beam-orbs-md-fade-out 0.5s ease forwards;
+    beam-orbs-md-spin 9s linear infinite,
+    beam-orbs-md-fade-out 0.9s ease-in forwards;
 }
 
 [data-beam-orbs-beam="on"]::after,
@@ -151,7 +151,7 @@
   pointer-events: none;
   z-index: 2;
   opacity: calc(var(--beam-orbs-md-opacity) * 0.12 * var(--beam-stroke-opacity, 1) * var(--beam-strength, 1));
-  animation: beam-orbs-md-hue-shift 12s ease-in-out infinite;
+  animation: beam-orbs-md-hue-shift 30s ease-in-out infinite;
 }
 
 [data-beam-orbs-beam="on"]::before,
@@ -198,7 +198,7 @@
   z-index: 1;
   opacity: calc(var(--beam-orbs-md-opacity) * 0.26 * var(--beam-inner-opacity, 1) * var(--beam-strength, 1));
   clip-path: inset(0 round var(--beam-orbs-radius, 12px));
-  animation: beam-orbs-md-hue-shift 12s ease-in-out infinite;
+  animation: beam-orbs-md-hue-shift 30s ease-in-out infinite;
 }
 
 [data-beam-orbs-beam] > [data-beam-orbs-bloom] {
@@ -319,7 +319,7 @@
   pointer-events: none;
   z-index: 2;
   opacity: calc(var(--beam-orbs-md-opacity) * 0.26 * var(--beam-stroke-opacity, 1) * var(--beam-strength, 1));
-  animation: beam-orbs-md-hue-shift-dark 12s ease-in-out infinite;
+  animation: beam-orbs-md-hue-shift-dark 30s ease-in-out infinite;
 }
 
 [class~="dark"] [data-beam-orbs-beam="on"]::before,
@@ -366,7 +366,7 @@
   z-index: 1;
   opacity: calc(var(--beam-orbs-md-opacity) * 0.42 * var(--beam-inner-opacity, 1) * var(--beam-strength, 1));
   clip-path: inset(0 round var(--beam-orbs-radius, 12px));
-  animation: beam-orbs-md-hue-shift-dark 12s ease-in-out infinite;
+  animation: beam-orbs-md-hue-shift-dark 30s ease-in-out infinite;
 }
 
 [class~="dark"] [data-beam-orbs-beam] > [data-beam-orbs-bloom] {
@@ -429,14 +429,14 @@
 
 [data-beam-orbs-card-beam="on"] {
   animation:
-    beam-orbs-sm-spin 1.96s linear infinite,
-    beam-orbs-sm-fade-in 0.6s ease forwards;
+    beam-orbs-sm-spin 9s linear infinite,
+    beam-orbs-sm-fade-in 1.2s ease-out forwards;
 }
 
 [data-beam-orbs-card-beam="off"] {
   animation:
-    beam-orbs-sm-spin 1.96s linear infinite,
-    beam-orbs-sm-fade-out 0.5s ease forwards;
+    beam-orbs-sm-spin 9s linear infinite,
+    beam-orbs-sm-fade-out 0.9s ease-in forwards;
 }
 
 [data-beam-orbs-card-beam="on"]::after,
@@ -493,7 +493,7 @@
   pointer-events: none;
   z-index: 2;
   opacity: calc(var(--beam-orbs-sm-opacity) * 0.12 * var(--beam-stroke-opacity, 1) * var(--beam-strength, 1));
-  animation: beam-orbs-sm-hue-shift 12s ease-in-out infinite;
+  animation: beam-orbs-sm-hue-shift 30s ease-in-out infinite;
 }
 
 [data-beam-orbs-card-beam="on"]::before,
@@ -533,7 +533,7 @@
   pointer-events: none;
   z-index: 1;
   opacity: calc(var(--beam-orbs-sm-opacity) * 0.30 * var(--beam-inner-opacity, 1) * var(--beam-strength, 1));
-  animation: beam-orbs-sm-hue-shift 12s ease-in-out infinite;
+  animation: beam-orbs-sm-hue-shift 30s ease-in-out infinite;
 }
 
 [data-beam-orbs-card-beam] > [data-beam-orbs-card-bloom] {
@@ -653,7 +653,7 @@
   pointer-events: none;
   z-index: 2;
   opacity: calc(var(--beam-orbs-sm-opacity) * 0.46 * var(--beam-stroke-opacity, 1) * var(--beam-strength, 1));
-  animation: beam-orbs-sm-hue-shift-dark 12s ease-in-out infinite;
+  animation: beam-orbs-sm-hue-shift-dark 30s ease-in-out infinite;
 }
 
 [class~="dark"] [data-beam-orbs-card-beam="on"]::before,
@@ -693,7 +693,7 @@
   pointer-events: none;
   z-index: 1;
   opacity: calc(var(--beam-orbs-sm-opacity) * 0.24 * var(--beam-inner-opacity, 1) * var(--beam-strength, 1));
-  animation: beam-orbs-sm-hue-shift-dark 12s ease-in-out infinite;
+  animation: beam-orbs-sm-hue-shift-dark 30s ease-in-out infinite;
 }
 
 [class~="dark"] [data-beam-orbs-card-beam] > [data-beam-orbs-card-bloom] {
