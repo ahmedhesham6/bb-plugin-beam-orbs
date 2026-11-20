@@ -106,7 +106,7 @@ it("adds one orb next to the Working indicator, in the state of the latest row",
   await frame();
   const orb = timelineOrb()!;
   expect($$("[data-thread-window] [data-beam-orbs-orb]")).toHaveLength(1);
-  expect(orb.dataset.beamOrbsOrb).toBe("working");
+  expect(orb.dataset.beamOrbsOrb).toBe("solving");
   expect(orb.nextElementSibling?.textContent).toBe("Working...");
   await vi.waitFor(() => expect(orb.querySelector("canvas")).not.toBeNull());
   expect(orb.querySelector("canvas")!.style.width).toBe("20px");
@@ -127,7 +127,7 @@ it("follows the latest activity row as new rows appear", async () => {
   );
   await frame();
   expect(timelineOrb()).toBe(orb);
-  expect(orb.dataset.beamOrbsOrb).toBe("composing");
+  expect(orb.dataset.beamOrbsOrb).toBe("solving");
 });
 
 it("shows solving while bb shows Thinking", async () => {
@@ -174,7 +174,7 @@ it("replaces the sidebar running icons and restores the row when it stops", asyn
   for (const icon of icons) {
     expect(icon.hasAttribute("data-beam-orbs-replaced")).toBe(true);
     const orb = icon.parentElement!.querySelector<HTMLElement>("[data-beam-orbs-orb]")!;
-    expect(orb.dataset.beamOrbsOrb).toBe("working");
+    expect(orb.dataset.beamOrbsOrb).toBe("solving");
   }
 
   const indicator = $("[data-sidebar-thread-trailing-indicator]")!;

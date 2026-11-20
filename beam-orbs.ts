@@ -371,7 +371,7 @@ export function startBeamAndOrbs(
         }
       } else if (root.matches(SIDEBAR)) {
         for (const icon of root.querySelectorAll(RUNNING_ICON)) {
-          wanted.set(icon, ["sidebar", "working"]);
+          wanted.set(icon, ["sidebar", "solving"]);
         }
       }
     }

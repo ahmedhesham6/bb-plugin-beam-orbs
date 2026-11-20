@@ -46,15 +46,15 @@ state from it:
 | Starting the agent | your prompt, "Provisioned thread" | `connecting` |
 | Thinking | "Thinking…", "Thought for 12s" | `solving` |
 | Reading or searching files | "Read README.md", "Explored 3 files", "Searched for init" | `searching` |
-| Running a command | "Running sleep 8", "Ran npm test" | `working` |
+| Running a command | "Running sleep 8", "Ran npm test" | `solving` |
 | Editing files | "Editing README.md", "Edited 2 files" | `shaping` |
 | Running subagents or a workflow | "Running 2 subagents", "Running agent …", "Running workflow: …" | `weaving` |
-| Writing the reply | the agent's message | `composing` |
+| Writing the reply | the agent's message | `solving` |
 | Waiting for your answer or approval | "Waiting for approval", "Waiting for your reply" | `breathing` |
 | Voice input | "Transcribing …" | `listening` |
-| Anything else | "Configuration warning" | `working` |
+| Anything else | "Configuration warning" | `solving` |
 
-Sidebar orbs always use `working`.
+Sidebar orbs always use `solving`.
 
 ## Voice glow and liquid metal
 
@@ -84,7 +84,7 @@ Sidebar orbs always use `working`.
 
 - The plugin reads bb's markup and the wording of its activity rows. A bb
   release that changes them can break the mapping. The orb then shows
-  `working`, and a missing hook means no orb or no beam. Tested with bb 0.50.
+  `solving`, and a missing hook means no orb or no beam. Tested with bb 0.50.
 - The orb follows the last row that bb has drawn. If you scroll far up in a
   long thread, bb may not draw the newest rows, and the orb can show an older
   state.

@@ -7,10 +7,9 @@ A 20 px dotted orb goes in front of bb's "Working..." text at the end of a threa
 - `connecting` while the agent starts
 - `solving` while it thinks
 - `searching` while it reads or searches files
-- `working` while it runs a command, and for any row the plugin does not know
+- `solving` while it thinks, runs a command, or writes the reply, and for any row the plugin does not know
 - `shaping` while it edits files
 - `weaving` while subagents or a workflow run
-- `composing` while it writes the reply
 - `breathing` while it waits for your answer or approval
 - `listening` for voice input
 
@@ -34,7 +33,7 @@ All four effects follow light and dark mode. When your system asks for reduced m
 
 ## Limits
 
-The plugin reads bb's markup and the wording of its activity rows. A bb release can change them. The orb then shows `working`.
+The plugin reads bb's markup and the wording of its activity rows. A bb release can change them. The orb then shows `solving`.
 
 ## Credits
 
