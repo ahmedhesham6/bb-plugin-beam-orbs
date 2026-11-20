@@ -4,14 +4,11 @@ A plugin for [bb](https://github.com/get-bb/bb) that adds four small effects to
 bb. It works with any theme.
 
 - **Thinking orbs.** A 20 px dotted orb shows what the agent does. At the end
-  of the transcript, the orb takes the place of bb's "Working..." text. In the
-  sidebar, an orb takes the place of the spinner on each thread that runs in
-  bb's own thread list, and of the "Working" icon and text on a Treelanes
-  card. Screen readers still read the text that the orb hides.
-- **Border beams.** While the composer is empty (no text and no attachments), a
+  of the transcript, the orb takes the place of bb's "Working..." text. Screen
+  readers still read the text that the orb hides.
+- **Border beam.** While the composer is empty (no text and no attachments), a
   colored beam of light moves around its whole border. The beam stops when
-  you type or attach a file. A smaller colored beam moves around the card of
-  the thread you have open in the sidebar, and follows you to the next thread.
+  you type or attach a file.
 - **Voice glow.** While bb records your voice, a gray glow rises from the
   bottom of the composer. While bb turns the recording into text, the glow
   gathers into one beam that sweeps from side to side.
@@ -55,9 +52,6 @@ state from it:
 | Voice input | "Transcribing …" | `listening` |
 | Anything else | "Configuration warning" | `solving` |
 
-Sidebar orbs always use `solving`. When a thread stops, the plugin removes its
-orb and shows bb's own icon and text again.
-
 ## Voice glow and liquid metal
 
 - The voice glow does not use the microphone. bb's voice input owns it, and
@@ -76,7 +70,7 @@ orb and shows bb's own icon and text again.
 
 - All four effects follow bb's light and dark mode.
 - When your system asks for reduced motion, each orb shows a still frame, the
-  beams stay still, the voice glow holds still and the metal stops.
+  beam stays still, the voice glow holds still and the metal stops.
 - When the "Working..." text or a running row goes away, the plugin removes
   its orb and stops its animation. Orbs also pause when they are off screen or
   the tab is hidden.
@@ -89,11 +83,7 @@ orb and shows bb's own icon and text again.
 - The orb follows the last row that bb has drawn. If you scroll far up in a
   long thread, bb may not draw the newest rows, and the orb can show an older
   state.
-- The card beam finds the open thread from the sidebar link that has
-  `aria-current="page"`, or else from the thread id in the address. It goes
-  on the row with bb's `bb-sidebar-selected-row` class.
-- The Treelanes orb looks for the `treelanes/status-working` icon of Treelanes
-  0.5.
+- The plugin does not change the sidebar.
 - The voice glow tells recording from transcribing by the words "Recording"
   and "Transcribing" in bb's voice bar.
 - With bb's default theme, `circle` makes the square send button round. The
@@ -116,6 +106,6 @@ bb plugin install path:$PWD
 [voice-glow](https://www.npmjs.com/package/voice-glow) and
 [metal-fx](https://www.npmjs.com/package/metal-fx) are Copyright (c) 2026 Jakub
 Antalik, under the MIT license. [app.css](app.css) reproduces the CSS of
-border-beam's `md` and `sm` sizes in its `colorful` colors. metal-fx includes shader code from
+border-beam's `md` size in its `colorful` colors. metal-fx includes shader code from
 [Paper Shaders](https://github.com/paper-design/shaders), Copyright (c) Paper
 Design, Inc., under the Apache License 2.0. [LICENSE](LICENSE) has each notice.

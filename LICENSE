@@ -52,8 +52,8 @@ SOFTWARE.
 ---
 
 This notice applies to border-beam (https://www.npmjs.com/package/border-beam).
-app.css reproduces the CSS that border-beam generates for its size="md" and
-size="sm" looks with colorVariant="colorful".
+app.css reproduces the CSS that border-beam generates for its size="md" look
+with colorVariant="colorful".
 
 MIT License
 

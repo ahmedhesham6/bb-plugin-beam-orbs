@@ -1,4 +1,4 @@
-Adds thinking orbs that show what the agent does, border beams on the empty composer and on the open thread's card, a voice glow while you dictate, and liquid metal on the send button. It works with any theme.
+Adds thinking orbs that show what the agent does, a border beam on the empty composer, a voice glow while you dictate, and liquid metal on the send button. It works with any theme.
 
 ## Thinking orbs
 
@@ -13,11 +13,9 @@ A 20 px dotted orb takes the place of bb's "Working..." text at the end of a thr
 - `breathing` while it waits for your answer or approval
 - `listening` for voice input
 
-In the sidebar, an orb takes the place of the spinner on each thread that runs in bb's thread list, and of the "Working" icon and text on a Treelanes card. When the thread stops, bb's own icon and text come back.
+## Border beam
 
-## Border beams
-
-While the composer is empty, a colored beam of light moves around its whole border. It fades out when you type or attach a file. A smaller colored beam moves around the card of the thread you have open in the sidebar, and moves to the next card when you open another thread.
+While the composer is empty, a colored beam of light moves around its whole border. It fades out when you type or attach a file. The plugin does not change the sidebar.
 
 ## Voice glow
 

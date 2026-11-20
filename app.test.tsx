@@ -35,6 +35,10 @@ const FIXTURE = `
     <a data-sidebar-thread-id="thr_2" href="#"></a>
     <span><svg data-icon="Loading" data-icon-root aria-label="Running"></svg></span>
   </div>
+  <div class="group/card relative bb-sidebar-selected-row">
+    <a data-sidebar-thread-id="thr_1" href="#" aria-current="page"></a>
+    <span data-status-value><span aria-hidden="true" data-status="running"><span data-icon="treelanes/status-working"></span>Working</span></span>
+  </div>
 </div>
 <div data-thread-window>
   <div data-timeline-items>
@@ -170,23 +174,16 @@ it("removes the orb when bb collapses the indicator after the turn", async () =>
   expect(timelineOrb()).not.toBeNull();
 });
 
-it("replaces the sidebar running icons and restores the row when it stops", async () => {
+it("leaves sidebar running icons, Treelanes working status and the open card alone", async () => {
   await mount();
-  const icons = $$('[data-sidebar="content"] [data-icon="Loading"]');
-  expect(icons).toHaveLength(2);
-  for (const icon of icons) {
-    expect(icon.hasAttribute("data-beam-orbs-sr-only")).toBe(true);
-    const orb = icon.parentElement!.querySelector<HTMLElement>("[data-beam-orbs-orb]")!;
-    expect(orb.dataset.beamOrbsOrb).toBe("solving");
-  }
-
-  const indicator = $("[data-sidebar-thread-trailing-indicator]")!;
-  indicator.querySelector("svg")!.remove();
-  indicator.insertAdjacentHTML("beforeend", `<span aria-label="Unread thread succeeded"></span>`);
   await frame();
-  expect(indicator.querySelector("[data-beam-orbs-orb]")).toBeNull();
-  expect(indicator.children).toHaveLength(1);
-  expect($$('[data-sidebar="content"] [data-beam-orbs-orb]')).toHaveLength(1);
+  const sidebar = $('[data-sidebar="content"]')!;
+  expect(sidebar.querySelector("[data-beam-orbs-orb]")).toBeNull();
+  expect(sidebar.querySelector("[data-beam-orbs-sr-only]")).toBeNull();
+  expect($$('[data-sidebar="content"] [data-icon="Loading"]')).toHaveLength(2);
+  expect($("[data-status]")!.textContent).toBe("Working");
+  expect($$("[data-beam-orbs-card-beam]")).toHaveLength(0);
+  expect($("[data-status-value]")!.childElementCount).toBe(1);
 });
 
 it("draws the orb for the current light or dark mode", async () => {
