@@ -107,7 +107,9 @@ it("adds one orb next to the Working indicator, in the state of the latest row",
   const orb = timelineOrb()!;
   expect($$("[data-thread-window] [data-beam-orbs-orb]")).toHaveLength(1);
   expect(orb.dataset.beamOrbsOrb).toBe("solving");
-  expect(orb.nextElementSibling?.textContent).toBe("Working...");
+  const label = orb.nextElementSibling as HTMLElement;
+  expect(label.textContent).toBe("Working...");
+  expect(label.hasAttribute("data-beam-orbs-sr-only")).toBe(true);
   await vi.waitFor(() => expect(orb.querySelector("canvas")).not.toBeNull());
   expect(orb.querySelector("canvas")!.style.width).toBe("20px");
 });
@@ -161,6 +163,7 @@ it("removes the orb when bb collapses the indicator after the turn", async () =>
   await frame();
   expect(orb.isConnected).toBe(false);
   expect(timelineOrb()).toBeNull();
+  expect(indicator.querySelector("[data-beam-orbs-sr-only]")).toBeNull();
 
   wrapper.className = "";
   await frame();
@@ -172,7 +175,7 @@ it("replaces the sidebar running icons and restores the row when it stops", asyn
   const icons = $$('[data-sidebar="content"] [data-icon="Loading"]');
   expect(icons).toHaveLength(2);
   for (const icon of icons) {
-    expect(icon.hasAttribute("data-beam-orbs-replaced")).toBe(true);
+    expect(icon.hasAttribute("data-beam-orbs-sr-only")).toBe(true);
     const orb = icon.parentElement!.querySelector<HTMLElement>("[data-beam-orbs-orb]")!;
     expect(orb.dataset.beamOrbsOrb).toBe("solving");
   }
@@ -236,7 +239,7 @@ it("removes every orb, the beam and its observers when the signal aborts", async
 
   expect(orbs()).toHaveLength(0);
   expect($$("canvas")).toHaveLength(0);
-  expect($$("[data-beam-orbs-replaced]")).toHaveLength(0);
+  expect($$("[data-beam-orbs-sr-only]")).toHaveLength(0);
   expect($$("[data-beam-orbs-bloom]")).toHaveLength(0);
   expect(form().hasAttribute("data-beam-orbs-beam")).toBe(false);
   expect(form().style.getPropertyValue("--beam-orbs-radius")).toBe("");

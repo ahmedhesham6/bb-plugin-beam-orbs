@@ -30,22 +30,28 @@ const THREAD_WINDOW = "[data-thread-window]";
 const SIDEBAR = '[data-sidebar="content"]';
 const COMPOSER = "[data-composer-box] form[data-promptbox]";
 const RUNNING_ICON = '[data-icon="Loading"]';
+const STATUS_WORKING_ICON = '[data-icon="treelanes/status-working"]';
+const OPEN_ROW = ".bb-sidebar-selected-row";
 const SEND_BUTTON = 'button[data-promptbox-submit-action][type="submit"]';
 const ORB = "data-beam-orbs-orb";
-const REPLACED = "data-beam-orbs-replaced";
+const SR_ONLY = "data-beam-orbs-sr-only";
 const BEAM = "data-beam-orbs-beam";
 const BLOOM = "data-beam-orbs-bloom";
+const CARD_BEAM = "data-beam-orbs-card-beam";
+const CARD_BLOOM = "data-beam-orbs-card-bloom";
+const CARD_RADIUS = "--beam-orbs-card-radius";
 const VOICE = "data-beam-orbs-voice";
 const METAL = "data-beam-orbs-metal";
 const METAL_TARGET = "data-beam-orbs-metal-target";
 const RADIUS = "--beam-orbs-radius";
 const COLLAPSED = '[class*="animation-play-state:paused"]';
-const FADE_OUT = "beam-orbs-fade-out";
+const FADE_OUT = "beam-orbs-md-fade-out";
 
-type Place = "timeline" | "sidebar";
+type Place = "timeline" | "sidebar" | "status";
 
 interface Orb {
   host: HTMLElement;
+  hidden: Element;
   view: OrbView;
   place: Place;
   state: OrbState | null;
@@ -64,6 +70,11 @@ interface Metal {
   host: HTMLElement;
   view: MetalView;
   dark: boolean | null;
+}
+
+interface CardBeam {
+  card: HTMLElement;
+  overlay: HTMLElement;
 }
 
 interface Composer {
@@ -102,6 +113,19 @@ export function readLatestActivity(threadWindow: Element): LatestActivity {
     kind: "row",
     label: titled?.getAttribute("title") ?? row.textContent ?? "",
   };
+}
+
+export function findOpenCard(sidebar: Element): HTMLElement | null {
+  let anchor = sidebar.querySelector(
+    '[data-sidebar-thread-id][aria-current="page"]',
+  );
+  if (anchor === null) {
+    const id = /\/threads\/([\w-]+)/.exec(location.pathname)?.[1];
+    if (id !== undefined) {
+      anchor = sidebar.querySelector(`[data-sidebar-thread-id="${id}"]`);
+    }
+  }
+  return anchor?.closest<HTMLElement>(OPEN_ROW) ?? null;
 }
 
 export function isComposerEmpty(form: Element): boolean {
@@ -147,6 +171,7 @@ export function startBeamAndOrbs(
   const orbs = new Map<Element, Orb>();
   const watches = new Map<Element, MutationObserver>();
   const composers = new Map<HTMLElement, Composer>();
+  let cardBeam: CardBeam | null = null;
   let frame = 0;
   let stopped = false;
 
@@ -195,7 +220,7 @@ export function startBeamAndOrbs(
           childList: true,
           subtree: true,
           attributes: true,
-          attributeFilter: ["data-icon"],
+          attributeFilter: ["data-icon", "class", "aria-current"],
         }) || changed;
     }
     for (const root of document.querySelectorAll(COMPOSER)) {
@@ -214,7 +239,7 @@ export function startBeamAndOrbs(
   const dropOrb = (anchor: Element, orb: Orb) => {
     orb.view.dispose();
     orb.host.remove();
-    if (orb.place === "sidebar") anchor.removeAttribute(REPLACED);
+    orb.hidden.removeAttribute(SR_ONLY);
     orbs.delete(anchor);
   };
 
@@ -226,14 +251,19 @@ export function startBeamAndOrbs(
     host.setAttribute(ORB, "");
     host.dataset.beamOrbsPlace = place;
     host.setAttribute("aria-hidden", "true");
-    if (place === "timeline") {
-      anchor.before(host);
-    } else {
-      anchor.setAttribute(REPLACED, "");
+    const hidden =
+      place === "status"
+        ? (anchor.closest("[data-status]") ?? anchor.parentElement ?? anchor)
+        : anchor;
+    if (place === "sidebar") {
       anchor.after(host);
+    } else {
+      hidden.before(host);
     }
+    hidden.setAttribute(SR_ONLY, "");
     const orb: Orb = {
       host,
+      hidden,
       view: effects.orb(host),
       place,
       state: null,
@@ -340,6 +370,32 @@ export function startBeamAndOrbs(
     composer.metal.view.update(dark);
   };
 
+  const dropCardBeam = () => {
+    if (cardBeam === null) return;
+    cardBeam.overlay.remove();
+    cardBeam = null;
+  };
+
+  const updateCardBeam = (card: HTMLElement | null) => {
+    if (
+      cardBeam !== null &&
+      (cardBeam.card !== card || cardBeam.overlay.parentElement !== card)
+    ) {
+      dropCardBeam();
+    }
+    if (card === null || cardBeam !== null) return;
+    const overlay = document.createElement("span");
+    overlay.setAttribute(CARD_BEAM, "on");
+    overlay.setAttribute("aria-hidden", "true");
+    const bloom = document.createElement("span");
+    bloom.setAttribute(CARD_BLOOM, "");
+    overlay.append(bloom);
+    const radius = getComputedStyle(card).borderTopLeftRadius;
+    if (radius !== "") overlay.style.setProperty(CARD_RADIUS, radius);
+    card.append(overlay);
+    cardBeam = { card, overlay };
+  };
+
   const cleanComposer = (form: HTMLElement) => {
     const composer = composers.get(form);
     if (composer !== undefined) {
@@ -358,6 +414,7 @@ export function startBeamAndOrbs(
     if (stopped) return;
     const dark = document.documentElement.classList.contains("dark");
     const wanted = new Map<Element, [Place, OrbState]>();
+    let openCard: HTMLElement | null = null;
 
     for (const root of watches.keys()) {
       if (!root.isConnected) continue;
@@ -373,6 +430,10 @@ export function startBeamAndOrbs(
         for (const icon of root.querySelectorAll(RUNNING_ICON)) {
           wanted.set(icon, ["sidebar", "solving"]);
         }
+        for (const icon of root.querySelectorAll(STATUS_WORKING_ICON)) {
+          wanted.set(icon, ["status", "solving"]);
+        }
+        openCard ??= findOpenCard(root);
       }
     }
 
@@ -382,6 +443,7 @@ export function startBeamAndOrbs(
     for (const [anchor, [place, state]] of wanted) {
       showOrb(placeOrb(anchor, place), state, dark);
     }
+    updateCardBeam(openCard);
 
     for (const form of composers.keys()) {
       if (!form.isConnected) cleanComposer(form);
@@ -413,6 +475,7 @@ export function startBeamAndOrbs(
     for (const observer of watches.values()) observer.disconnect();
     watches.clear();
     for (const [anchor, orb] of orbs) dropOrb(anchor, orb);
+    dropCardBeam();
     for (const form of [...composers.keys()]) cleanComposer(form);
   };
   signal.addEventListener("abort", stop, { once: true });
