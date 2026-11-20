@@ -34,7 +34,7 @@ const RULES: ReadonlyArray<readonly [RegExp, OrbState]> = [
     /^(editing|edited|creating|created|deleting|deleted|renaming|renamed|writing|wrote|applying|applied)\b/,
     "shaping",
   ],
-  [/^(running|ran)\b/, "solving"],
+  [/^(running|ran)\b/, "composing"],
 ];
 
 function stateForPhrase(phrase: string): OrbState | null {
@@ -64,6 +64,6 @@ export function orbStateFor(
   const fromIndicator = stateForLabel(indicatorLabel);
   if (fromIndicator !== null) return fromIndicator;
   if (latest === null || latest.kind === "user-message") return "connecting";
-  if (latest.kind === "reply") return "solving";
-  return stateForLabel(latest.label) ?? "solving";
+  if (latest.kind === "reply") return "composing";
+  return stateForLabel(latest.label) ?? "composing";
 }

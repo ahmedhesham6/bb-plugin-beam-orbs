@@ -44,13 +44,13 @@ state from it:
 | Starting the agent | your prompt, "Provisioned thread" | `connecting` |
 | Thinking | "Thinking…", "Thought for 12s" | `solving` |
 | Reading or searching files | "Read README.md", "Explored 3 files", "Searched for init" | `searching` |
-| Running a command | "Running sleep 8", "Ran npm test" | `solving` |
+| Running a command | "Running sleep 8", "Ran npm test" | `composing` |
 | Editing files | "Editing README.md", "Edited 2 files" | `shaping` |
 | Running subagents or a workflow | "Running 2 subagents", "Running agent …", "Running workflow: …" | `weaving` |
-| Writing the reply | the agent's message | `solving` |
+| Writing the reply | the agent's message | `composing` |
 | Waiting for your answer or approval | "Waiting for approval", "Waiting for your reply" | `breathing` |
 | Voice input | "Transcribing …" | `listening` |
-| Anything else | "Configuration warning" | `solving` |
+| Anything else | "Configuration warning" | `composing` |
 
 ## Voice glow and liquid metal
 
@@ -79,7 +79,7 @@ state from it:
 
 - The plugin reads bb's markup and the wording of its activity rows. A bb
   release that changes them can break the mapping. The orb then shows
-  `solving`, and a missing hook means no orb or no beam. Tested with bb 0.50.
+  `composing`, and a missing hook means no orb or no beam. Tested with bb 0.50.
 - The orb follows the last row that bb has drawn. If you scroll far up in a
   long thread, bb may not draw the newest rows, and the orb can show an older
   state.

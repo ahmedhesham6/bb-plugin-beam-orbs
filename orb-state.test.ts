@@ -19,10 +19,10 @@ describe("orbStateFor", () => {
     ["searching", "Working...", row("Searched for init"), "searching"],
     ["a web search", "Working...", row("Running web search: orb"), "searching"],
     ["listing files", "Working...", row("Listed src"), "searching"],
-    ["running a command", "Working...", row("Running sleep 8 && ls -la"), "solving"],
-    ["a command that ran", "Working...", row("Ran npm test"), "solving"],
-    ["a group of commands", "Working...", row("Running 3 commands"), "solving"],
-    ["a tool", "Working...", row("Running tool: lint"), "solving"],
+    ["running a command", "Working...", row("Running sleep 8 && ls -la"), "composing"],
+    ["a command that ran", "Working...", row("Ran npm test"), "composing"],
+    ["a group of commands", "Working...", row("Running 3 commands"), "composing"],
+    ["a tool", "Working...", row("Running tool: lint"), "composing"],
     ["editing a file", "Working...", row("Editing README.md"), "shaping"],
     ["edited files", "Working...", row("Edited 2 files"), "shaping"],
     ["a created file", "Working...", row("Created notes.md"), "shaping"],
@@ -34,22 +34,22 @@ describe("orbStateFor", () => {
     ["waited for subagents", "Working...", row("Waited for agents (4s)"), "weaving"],
     ["a workflow", "Working...", row("Running workflow: release"), "weaving"],
     ["a background agent", "Working...", row("Running background agent: docs"), "weaving"],
-    ["the reply", "Working...", { kind: "reply" }, "solving"],
+    ["the reply", "Working...", { kind: "reply" }, "composing"],
     ["an approval request", "Working...", row("Waiting for approval"), "breathing"],
     ["an approval indicator", "Waiting for approval", row("Edited a.ts"), "breathing"],
     ["a question for the user", "Working...", row("Waiting for answers to 2 questions"), "breathing"],
     ["waiting for the user's reply", "Working...", row("Waiting for your reply"), "breathing"],
     ["voice input", "Working...", row("Transcribing voice input"), "listening"],
-    ["an unknown row", "Working...", row("Configuration warning"), "solving"],
-    ["an empty label", "Working...", row(""), "solving"],
-    ["the turn summary", "Working...", row("Worked for (51s)"), "solving"],
+    ["an unknown row", "Working...", row("Configuration warning"), "composing"],
+    ["an empty label", "Working...", row(""), "composing"],
+    ["the turn summary", "Working...", row("Worked for (51s)"), "composing"],
   ] as const)("%s → %s", (_case, indicator, latest, expected) => {
     expect(orbStateFor(indicator, latest as LatestActivity)).toBe(expected);
   });
 
   it("prefers the part of a summary that is still in progress", () => {
     expect(orbStateFor("Working...", row("Explored 2 files, Running 1 command"))).toBe(
-      "solving",
+      "composing",
     );
   });
 

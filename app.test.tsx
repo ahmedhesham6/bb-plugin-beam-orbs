@@ -110,7 +110,7 @@ it("adds one orb next to the Working indicator, in the state of the latest row",
   await frame();
   const orb = timelineOrb()!;
   expect($$("[data-thread-window] [data-beam-orbs-orb]")).toHaveLength(1);
-  expect(orb.dataset.beamOrbsOrb).toBe("solving");
+  expect(orb.dataset.beamOrbsOrb).toBe("composing");
   const label = orb.nextElementSibling as HTMLElement;
   expect(label.textContent).toBe("Working...");
   expect(label.hasAttribute("data-beam-orbs-sr-only")).toBe(true);
@@ -133,7 +133,7 @@ it("follows the latest activity row as new rows appear", async () => {
   );
   await frame();
   expect(timelineOrb()).toBe(orb);
-  expect(orb.dataset.beamOrbsOrb).toBe("solving");
+  expect(orb.dataset.beamOrbsOrb).toBe("composing");
 });
 
 it("shows solving while bb shows Thinking", async () => {
