@@ -403,18 +403,18 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  [data-beam-orbs-beam="on"] {
+  :root:not([data-beam-orbs-animate]) [data-beam-orbs-beam="on"] {
     animation: none;
     --beam-orbs-md-angle: 200deg;
     --beam-orbs-md-opacity: 1;
   }
 
-  [data-beam-orbs-beam]::before,
-  [data-beam-orbs-beam]::after {
+  :root:not([data-beam-orbs-animate]) [data-beam-orbs-beam]::before,
+  :root:not([data-beam-orbs-animate]) [data-beam-orbs-beam]::after {
     animation: none !important;
   }
 
-  [data-beam-orbs-beam="off"] {
+  :root:not([data-beam-orbs-animate]) [data-beam-orbs-beam="off"] {
     animation: none;
   }
 }

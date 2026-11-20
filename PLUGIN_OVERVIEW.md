@@ -27,7 +27,7 @@ The send button gets an animated silver ring. The button works as before. While 
 
 ## Light, dark and motion
 
-All four effects follow light and dark mode. When your system asks for reduced motion, they stay still.
+All four effects follow light and dark mode. When your system asks for reduced motion, they stay still, unless you turn on **Animate with reduced motion** on the plugin's page in Settings. The setting applies at once, with no reload.
 
 ## Limits
 

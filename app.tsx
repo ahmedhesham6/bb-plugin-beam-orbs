@@ -1,6 +1,7 @@
-import { definePluginApp } from "@get-bb/plugin-sdk/app";
-import type { CSSProperties } from "react";
-import { createRoot } from "react-dom/client";
+import { definePluginApp, useSettings } from "@get-bb/plugin-sdk/app";
+import { useEffect, type CSSProperties, type ReactNode } from "react";
+import { flushSync } from "react-dom";
+import { createRoot, type Root } from "react-dom/client";
 import { isMetalFxSupported, MetalFx } from "metal-fx";
 import { ThinkingOrb } from "thinking-orbs";
 import { VoiceBeam, type VoiceBeamMotion } from "voice-glow";
@@ -11,6 +12,12 @@ import {
   type VoiceGlowView,
   type VoiceMode,
 } from "./beam-orbs";
+import {
+  motionSetting,
+  REDUCED_MOTION_QUERY,
+  SETTING_KEY,
+  withMotionAllowed,
+} from "./motion-setting";
 import "./app.css";
 
 const FILL: CSSProperties = { display: "block", width: "100%", height: "100%" };
@@ -18,7 +25,6 @@ const COVER: CSSProperties = { position: "absolute", inset: 0 };
 const RECORDING_LEVEL = 0.35;
 const SWEEP_SECONDS = 0.9;
 const GATHER_SECONDS = 0.35;
-const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
 const GRAY_BAND = {
   dark: { core: "#ffffff", above: "#d4d4d4", mid: "#b4b4b4", below: "#949494" },
   light: { core: "#5a5a5a", above: "#8c8c8c", mid: "#787878", below: "#646464" },
@@ -28,27 +34,61 @@ function radiusOf(element: HTMLElement): number {
   return Number.parseFloat(getComputedStyle(element).borderTopLeftRadius) || 0;
 }
 
-function createOrb(host: HTMLElement): OrbView {
-  const root = createRoot(host);
+function motionAwareRoot(host: HTMLElement) {
+  let root: Root | null = null;
+  let rootAnimates = false;
+  let draw: (() => ReactNode) | null = null;
+  const paint = () => {
+    if (draw === null) return;
+    const next = draw();
+    const animate = motionSetting.get();
+    if (root === null || rootAnimates !== animate) {
+      root?.unmount();
+      root = createRoot(host);
+      rootAnimates = animate;
+    }
+    const target = root;
+    if (animate) {
+      withMotionAllowed(() => flushSync(() => target.render(next)));
+    } else {
+      target.render(next);
+    }
+  };
+  const unsubscribe = motionSetting.subscribe(paint);
+  return {
+    render(next: () => ReactNode) {
+      draw = next;
+      paint();
+    },
+    dispose() {
+      unsubscribe();
+      root?.unmount();
+      root = null;
+    },
+  };
+}
+
+export function createOrb(host: HTMLElement): OrbView {
+  const root = motionAwareRoot(host);
   return {
     update(state, dark) {
-      root.render(
+      root.render(() => (
         <ThinkingOrb
           state={state}
           size={20}
           theme={dark ? "dark" : "light"}
           aria-hidden="true"
-        />,
-      );
+        />
+      ));
     },
     dispose() {
-      root.unmount();
+      root.dispose();
     },
   };
 }
 
-function createVoiceGlow(host: HTMLElement): VoiceGlowView {
-  const root = createRoot(host);
+export function createVoiceGlow(host: HTMLElement): VoiceGlowView {
+  const root = motionAwareRoot(host);
   let mode: VoiceMode = "recording";
   let since = performance.now();
   const motion = (): VoiceBeamMotion => {
@@ -68,7 +108,7 @@ function createVoiceGlow(host: HTMLElement): VoiceGlowView {
         since = performance.now();
       }
       const radius = radiusOf(host);
-      root.render(
+      root.render(() => (
         <VoiceBeam
           type="default"
           colorVariant="mono"
@@ -80,18 +120,18 @@ function createVoiceGlow(host: HTMLElement): VoiceGlowView {
           style={COVER}
         >
           <div style={{ ...FILL, borderRadius: radius }} />
-        </VoiceBeam>,
-      );
+        </VoiceBeam>
+      ));
     },
     dispose() {
-      root.unmount();
+      root.dispose();
     },
   };
 }
 
 function createMetal(host: HTMLElement): MetalView {
   const root = createRoot(host);
-  const reduced = window.matchMedia(REDUCED_MOTION);
+  const reduced = window.matchMedia(REDUCED_MOTION_QUERY);
   let dark = false;
   const render = () => {
     const radius = radiusOf(host);
@@ -100,7 +140,7 @@ function createMetal(host: HTMLElement): MetalView {
         variant="circle"
         preset="silver"
         theme={dark ? "dark" : "light"}
-        paused={reduced.matches}
+        paused={reduced.matches && !motionSetting.get()}
         borderRadius={radius}
         style={FILL}
       >
@@ -109,6 +149,7 @@ function createMetal(host: HTMLElement): MetalView {
     );
   };
   reduced.addEventListener("change", render);
+  const unsubscribe = motionSetting.subscribe(render);
   return {
     update(next) {
       dark = next;
@@ -116,12 +157,26 @@ function createMetal(host: HTMLElement): MetalView {
     },
     dispose() {
       reduced.removeEventListener("change", render);
+      unsubscribe();
       root.unmount();
     },
   };
 }
 
+function MotionSettingBridge() {
+  const { values } = useSettings();
+  const animate = values?.[SETTING_KEY] === true;
+  useEffect(() => {
+    queueMicrotask(() => motionSetting.set(animate));
+  }, [animate]);
+  return null;
+}
+
 export default definePluginApp((app) => {
+  app.slots.experimental_appOverlay({
+    id: "motion-setting",
+    component: MotionSettingBridge,
+  });
   app.contentScripts.register({
     id: "beam-and-orbs",
     mount({ signal }) {

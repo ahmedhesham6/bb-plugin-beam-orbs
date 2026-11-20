@@ -1,4 +1,5 @@
 import type { OrbState } from "thinking-orbs";
+import { motionSetting } from "./motion-setting";
 import { orbStateFor, type LatestActivity } from "./orb-state";
 
 export interface OrbView {
@@ -39,6 +40,7 @@ const METAL_TARGET = "data-beam-orbs-metal-target";
 const RADIUS = "--beam-orbs-radius";
 const COLLAPSED = '[class*="animation-play-state:paused"]';
 const FADE_OUT = "beam-orbs-md-fade-out";
+const ANIMATE = "data-beam-orbs-animate";
 
 interface Orb {
   host: HTMLElement;
@@ -149,6 +151,12 @@ export function startBeamAndOrbs(
     if (stopped || frame !== 0) return;
     frame = requestAnimationFrame(flush);
   };
+
+  const showMotion = (animate: boolean) => {
+    document.documentElement.toggleAttribute(ANIMATE, animate);
+  };
+  showMotion(motionSetting.get());
+  const stopMotion = motionSetting.subscribe(showMotion);
 
   const themeObserver = new MutationObserver(schedule);
   themeObserver.observe(document.documentElement, {
@@ -383,6 +391,8 @@ export function startBeamAndOrbs(
     stopped = true;
     if (frame !== 0) cancelAnimationFrame(frame);
     clearInterval(timer);
+    stopMotion();
+    document.documentElement.removeAttribute(ANIMATE);
     themeObserver.disconnect();
     for (const observer of watches.values()) observer.disconnect();
     watches.clear();

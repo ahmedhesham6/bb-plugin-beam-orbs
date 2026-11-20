@@ -70,13 +70,30 @@ state from it:
 
 - All four effects follow bb's light and dark mode.
 - When your system asks for reduced motion, each orb shows a still frame, the
-  beam stays still, the voice glow holds still and the metal stops.
+  beam stays still, the voice glow holds still and the metal stops. To keep
+  them moving, turn on the setting below.
 - When the "Working..." text or a running row goes away, the plugin removes
   its orb and stops its animation. Orbs also pause when they are off screen or
   the tab is hidden.
 
+## Settings
+
+**Animate with reduced motion** (off by default) keeps the orbs, beam, voice
+glow and metal moving when your system asks for reduced motion. You can set it
+on the plugin's page in Settings, or with:
+
+```sh
+bb plugin config beam-orbs set animateWithReducedMotion true
+```
+
+The change applies at once, with no reload. bb's own motion does not change.
+
 ## Limits
 
+- thinking-orbs and voice-glow have no option to ignore reduced motion. While
+  the setting is on, the plugin mounts each orb and voice glow with a short,
+  local answer of "no reduced motion" to their own check. Other code on the
+  page still sees your real system setting.
 - The plugin reads bb's markup and the wording of its activity rows. A bb
   release that changes them can break the mapping. The orb then shows
   `composing`, and a missing hook means no orb or no beam. Tested with bb 0.50.
