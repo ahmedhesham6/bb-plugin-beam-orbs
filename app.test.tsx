@@ -1,10 +1,13 @@
 // @vitest-environment jsdom
-import { afterEach, beforeAll, beforeEach, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import {
   loadPluginApp,
   mountPluginContentScripts,
   type MountedPluginContentScripts,
 } from "@get-bb/plugin-sdk/testing/app";
+
+HTMLCanvasElement.prototype.getContext = (() =>
+  null) as unknown as HTMLCanvasElement["getContext"];
 
 const app = await loadPluginApp(() => import("./app"));
 
@@ -83,11 +86,6 @@ function addRow(id: string, html: string) {
   row.innerHTML = html;
   $("[data-timeline-items]")!.append(row);
 }
-
-beforeAll(() => {
-  HTMLCanvasElement.prototype.getContext = (() =>
-    null) as unknown as HTMLCanvasElement["getContext"];
-});
 
 beforeEach(() => {
   live.clear();

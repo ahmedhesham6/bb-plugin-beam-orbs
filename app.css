@@ -21,6 +21,35 @@
   display: none !important;
 }
 
+[data-beam-orbs-voice] {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+}
+
+[data-beam-orbs-metal] {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  display: block;
+  border-radius: inherit;
+}
+
+[data-beam-orbs-voice] *,
+[data-beam-orbs-metal] * {
+  pointer-events: none !important;
+}
+
+[data-beam-orbs-metal-target] {
+  position: relative;
+  isolation: isolate;
+  background: transparent !important;
+  color: var(--foreground) !important;
+}
+
 /*! The border beam below reproduces the size="line", colorVariant="mono"
     look of border-beam 1.4.1, Copyright (c) 2026 Jakub Antalik, MIT License.
     The LICENSE file has the full notice. */
