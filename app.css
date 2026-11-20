@@ -1,0 +1,402 @@
+[data-beam-orbs-orb] {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+}
+
+[data-beam-orbs-orb][data-beam-orbs-place="timeline"] {
+  margin-inline-end: 6px;
+}
+
+[data-beam-orbs-orb][data-beam-orbs-place="sidebar"] {
+  margin: -2px;
+}
+
+[data-beam-orbs-replaced] {
+  display: none !important;
+}
+
+/*! The border beam below reproduces the size="line", colorVariant="mono"
+    look of border-beam 1.4.1, Copyright (c) 2026 Jakub Antalik, MIT License.
+    The LICENSE file has the full notice. */
+
+[data-beam-orbs-bloom] {
+  position: absolute;
+  display: none;
+}
+
+@property --beam-orbs-x {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: true;
+}
+
+@property --beam-orbs-w {
+  syntax: "<number>";
+  initial-value: 1;
+  inherits: true;
+}
+
+@property --beam-orbs-h {
+  syntax: "<number>";
+  initial-value: 1;
+  inherits: true;
+}
+
+@property --beam-orbs-spike {
+  syntax: "<number>";
+  initial-value: 1;
+  inherits: true;
+}
+
+@property --beam-orbs-spike2 {
+  syntax: "<number>";
+  initial-value: 1;
+  inherits: true;
+}
+
+@property --beam-orbs-edge {
+  syntax: "<number>";
+  initial-value: 1;
+  inherits: true;
+}
+
+@property --beam-orbs-opacity {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: true;
+}
+
+[data-beam-orbs-beam] {
+  position: relative;
+}
+
+[data-beam-orbs-beam="on"] {
+  animation:
+    beam-orbs-travel 3.1s linear infinite,
+    beam-orbs-edge-fade 3.1s linear infinite,
+    beam-orbs-breathe 4.0s ease-in-out infinite,
+    beam-orbs-spike 4.1s ease-in-out infinite,
+    beam-orbs-spike2 5.3s ease-in-out infinite,
+    beam-orbs-fade-in 0.6s ease forwards;
+}
+
+[data-beam-orbs-beam="off"] {
+  animation:
+    beam-orbs-travel 3.1s linear infinite,
+    beam-orbs-edge-fade 3.1s linear infinite,
+    beam-orbs-breathe 4.0s ease-in-out infinite,
+    beam-orbs-spike 4.1s ease-in-out infinite,
+    beam-orbs-spike2 5.3s ease-in-out infinite,
+    beam-orbs-fade-out 0.5s ease forwards;
+}
+
+[data-beam-orbs-beam="on"]::after,
+[data-beam-orbs-beam="off"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  clip-path: inset(0 round var(--beam-orbs-radius, 12px));
+  background: radial-gradient(
+        ellipse calc(35px * var(--beam-orbs-w)) calc(28px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100%) calc(100% + 2px),
+        rgba(0, 0, 0, 0.6) 0%,
+        rgba(0, 0, 0, 0.25) 35%,
+        transparent 70%
+      ), radial-gradient(ellipse calc(45px * var(--beam-orbs-w)) calc(36px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100%) calc(100% + 2px), rgb(100, 100, 100), transparent),
+       radial-gradient(ellipse calc(35px * var(--beam-orbs-w)) calc(32px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100% + 65px) calc(100%), rgb(80, 80, 80), transparent),
+       radial-gradient(ellipse calc(40px * var(--beam-orbs-w)) calc(28px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100% - 60px) calc(100% + 2px), rgb(90, 90, 90), transparent),
+       radial-gradient(ellipse calc(35px * var(--beam-orbs-w)) calc(34px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100% - 90px) calc(100%), rgb(70, 70, 70), transparent),
+       radial-gradient(ellipse calc(38px * var(--beam-orbs-w)) calc(30px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100% + 85px) calc(100% - 1px), rgb(85, 85, 85), transparent),
+       radial-gradient(ellipse calc(50px * var(--beam-orbs-w)) calc(24px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100% + 35px) calc(100% + 1px), rgb(95, 95, 95), transparent),
+       radial-gradient(ellipse calc(40px * var(--beam-orbs-w)) calc(22px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100% - 35px) calc(100%), rgb(75, 75, 75), transparent),
+       radial-gradient(ellipse calc(35px * var(--beam-orbs-w)) calc(28px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100% + 110px) calc(100% + 1px), rgb(105, 105, 105), transparent),
+       radial-gradient(ellipse calc(30px * var(--beam-orbs-w)) calc(30px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100% - 110px) calc(100% - 1px), rgb(65, 65, 65), transparent);
+  -webkit-mask:
+    radial-gradient(
+      ellipse calc(78px * var(--beam-orbs-w)) calc(60px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100%) 100%,
+      white 0%, rgba(255, 255, 255, 0.5) 45%, transparent 100%
+    ),
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: source-in, xor;
+  mask:
+    radial-gradient(
+      ellipse calc(78px * var(--beam-orbs-w)) calc(60px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100%) 100%,
+      white 0%, rgba(255, 255, 255, 0.5) 45%, transparent 100%
+    ),
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: intersect, exclude;
+  pointer-events: none;
+  z-index: 2;
+  opacity: calc(var(--beam-orbs-opacity) * var(--beam-orbs-edge) * 0.16 * var(--beam-stroke-opacity, 1) * var(--beam-strength, 1));
+}
+
+[data-beam-orbs-beam="on"]::before,
+[data-beam-orbs-beam="off"]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(ellipse calc(33px * var(--beam-orbs-w)) calc(30px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100%) calc(100%), rgba(200, 200, 200, 0.48), transparent),
+    radial-gradient(ellipse calc(24px * var(--beam-orbs-w)) calc(26px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100% + 39px) calc(100% - 3px), rgba(170, 170, 170, 0.42), transparent),
+    radial-gradient(ellipse calc(27px * var(--beam-orbs-w)) calc(24px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100% - 36px) calc(100%), rgba(155, 155, 155, 0.48), transparent),
+    radial-gradient(ellipse calc(23px * var(--beam-orbs-w)) calc(28px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100% - 54px) calc(100% - 2px), rgba(185, 185, 185, 0.42), transparent),
+    radial-gradient(ellipse calc(24px * var(--beam-orbs-w)) calc(24px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100% + 51px) calc(100% - 1px), rgba(165, 165, 165, 0.50), transparent),
+    radial-gradient(ellipse calc(30px * var(--beam-orbs-w)) calc(20px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100% + 21px) calc(100%), rgba(180, 180, 180, 0.45), transparent),
+    radial-gradient(ellipse calc(25px * var(--beam-orbs-w)) calc(18px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100% - 21px) calc(100% - 2px), rgba(160, 160, 160, 0.40), transparent),
+    radial-gradient(ellipse calc(21px * var(--beam-orbs-w)) calc(24px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100% + 66px) calc(100%), rgba(175, 175, 175, 0.45), transparent),
+    radial-gradient(ellipse calc(18px * var(--beam-orbs-w)) calc(26px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100% - 66px) calc(100% - 1px), rgba(190, 190, 190, 0.52), transparent);
+  box-shadow: inset 0 0 9px 1px rgba(0, 0, 0, 0.14);
+  -webkit-mask-image:
+    radial-gradient(
+      ellipse calc(78px * var(--beam-orbs-w)) calc(60px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100%) 100%,
+      white 0%, rgba(255, 255, 255, 0.5) 45%, transparent 100%
+    ),
+    linear-gradient(white, transparent 28px, transparent calc(100% - 28px), white),
+    linear-gradient(to right, white, transparent 28px, transparent calc(100% - 28px), white);
+  -webkit-mask-composite: source-in, source-over;
+  mask-image:
+    radial-gradient(
+      ellipse calc(78px * var(--beam-orbs-w)) calc(60px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100%) 100%,
+      white 0%, rgba(255, 255, 255, 0.5) 45%, transparent 100%
+    ),
+    linear-gradient(white, transparent 28px, transparent calc(100% - 28px), white),
+    linear-gradient(to right, white, transparent 28px, transparent calc(100% - 28px), white);
+  mask-composite: intersect, add;
+  pointer-events: none;
+  z-index: 1;
+  opacity: calc(var(--beam-orbs-opacity) * var(--beam-orbs-edge) * 0.32 * var(--beam-inner-opacity, 1) * var(--beam-strength, 1));
+  clip-path: inset(0 round var(--beam-orbs-radius, 12px));
+}
+
+[data-beam-orbs-beam] > [data-beam-orbs-bloom] {
+  display: none;
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  clip-path: inset(0 round var(--beam-orbs-radius, 12px));
+  padding: 0;
+  -webkit-mask: radial-gradient(
+    ellipse calc(84px * var(--beam-orbs-w)) calc(110px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100%) 100%,
+    white 0%, rgba(255, 255, 255, 0.5) 35%, transparent 100%
+  );
+  -webkit-mask-composite: source-over;
+  mask: radial-gradient(
+    ellipse calc(84px * var(--beam-orbs-w)) calc(110px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100%) 100%,
+    white 0%, rgba(255, 255, 255, 0.5) 35%, transparent 100%
+  );
+  mask-composite: add;
+  background: radial-gradient(ellipse calc(12px * var(--beam-orbs-spike) * var(--beam-spike-mul, 1)) calc(42px * var(--beam-orbs-h) * var(--beam-spike-mul, 1)) at 8% calc(100% - 2px), rgba(80, 80, 80, 0.14), rgba(80, 80, 80, 0.11) 30%, transparent 88%),
+       radial-gradient(ellipse calc(10px * var(--beam-orbs-spike2) * var(--beam-spike-mul, 1)) calc(35px * var(--beam-orbs-h) * var(--beam-spike-mul, 1)) at 22% calc(100% - 4px), rgba(120, 120, 120, 0.12), rgba(120, 120, 120, 0.09) 50%, transparent 95%),
+       radial-gradient(ellipse calc(14px * (2 - var(--beam-orbs-spike)) * var(--beam-spike-mul, 1)) calc(38px * var(--beam-orbs-h) * var(--beam-spike-mul, 1)) at 36% calc(100% - 3px), rgba(80, 80, 80, 0.14), rgba(80, 80, 80, 0.08) 40%, transparent 90%),
+       radial-gradient(ellipse calc(14px * var(--beam-orbs-spike2) * var(--beam-spike-mul, 1)) calc(28px * var(--beam-orbs-h) * var(--beam-spike-mul, 1)) at 50% calc(100% - 2px), rgba(100, 100, 100, 0.10), rgba(100, 100, 100, 0.05) 55%, transparent 96%),
+       radial-gradient(ellipse calc(12px * (2 - var(--beam-orbs-spike2)) * var(--beam-spike-mul, 1)) calc(40px * var(--beam-orbs-h) * var(--beam-spike-mul, 1)) at 64% calc(100% - 4px), rgba(70, 70, 70, 0.14), rgba(70, 70, 70, 0.08) 35%, transparent 89%),
+       radial-gradient(ellipse calc(7px * var(--beam-orbs-spike) * var(--beam-spike-mul, 1)) calc(45px * var(--beam-orbs-h) * var(--beam-spike-mul, 1)) at 78% calc(100% - 2px), rgba(90, 90, 90, 0.14), rgba(90, 90, 90, 0.07) 48%, transparent 94%),
+       radial-gradient(ellipse calc(12px * (2 - var(--beam-orbs-spike)) * var(--beam-spike-mul, 1)) calc(32px * var(--beam-orbs-h) * var(--beam-spike-mul, 1)) at 92% calc(100% - 3px), rgba(85, 85, 85, 0.14), rgba(85, 85, 85, 0.08) 42%, transparent 91%),
+       radial-gradient(ellipse calc(50px * var(--beam-orbs-w)) calc(32px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100%) calc(100%), rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.18) 30%, rgba(0, 0, 0, 0.03) 60%, transparent 85%);
+  filter: blur(6px);
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0;
+}
+
+[data-beam-orbs-beam="on"] [data-beam-orbs-bloom],
+[data-beam-orbs-beam="off"] [data-beam-orbs-bloom] {
+  display: block;
+  opacity: calc(var(--beam-orbs-opacity) * var(--beam-orbs-edge) * 0.30 * var(--beam-bloom-opacity, 1) * var(--beam-strength, 1));
+}
+
+@keyframes beam-orbs-travel {
+  0%   { --beam-orbs-x: 0.06;  --beam-orbs-w: 0.5; }
+  10%  { --beam-orbs-x: 0.15;  --beam-orbs-w: 0.8; }
+  20%  { --beam-orbs-x: 0.25;  --beam-orbs-w: 1.1; }
+  30%  { --beam-orbs-x: 0.35;  --beam-orbs-w: 1.3; }
+  40%  { --beam-orbs-x: 0.44;  --beam-orbs-w: 1.45; }
+  50%  { --beam-orbs-x: 0.5;   --beam-orbs-w: 1.5; }
+  60%  { --beam-orbs-x: 0.56;  --beam-orbs-w: 1.45; }
+  70%  { --beam-orbs-x: 0.65;  --beam-orbs-w: 1.3; }
+  80%  { --beam-orbs-x: 0.75;  --beam-orbs-w: 1.1; }
+  90%  { --beam-orbs-x: 0.85;  --beam-orbs-w: 0.8; }
+  100% { --beam-orbs-x: 0.94;  --beam-orbs-w: 0.5; }
+}
+
+@keyframes beam-orbs-edge-fade {
+  0%    { --beam-orbs-edge: 0; }
+  12.5% { --beam-orbs-edge: 0; }
+  32.5% { --beam-orbs-edge: 1; }
+  67.5% { --beam-orbs-edge: 1; }
+  87.5% { --beam-orbs-edge: 0; }
+  100%  { --beam-orbs-edge: 0; }
+}
+
+@keyframes beam-orbs-breathe {
+  0%, 100% { --beam-orbs-h: 0.8; }
+  25%      { --beam-orbs-h: 1.25; }
+  55%      { --beam-orbs-h: 0.85; }
+  80%      { --beam-orbs-h: 1.3; }
+}
+
+@keyframes beam-orbs-spike {
+  0%   { --beam-orbs-spike: 0.8; }
+  25%  { --beam-orbs-spike: 1.3; }
+  50%  { --beam-orbs-spike: 0.9; }
+  75%  { --beam-orbs-spike: 1.4; }
+  100% { --beam-orbs-spike: 0.8; }
+}
+
+@keyframes beam-orbs-spike2 {
+  0%   { --beam-orbs-spike2: 1.2; }
+  25%  { --beam-orbs-spike2: 0.7; }
+  50%  { --beam-orbs-spike2: 1.4; }
+  75%  { --beam-orbs-spike2: 0.8; }
+  100% { --beam-orbs-spike2: 1.2; }
+}
+
+@keyframes beam-orbs-fade-in {
+  to { --beam-orbs-opacity: 1; }
+}
+
+@keyframes beam-orbs-fade-out {
+  from { --beam-orbs-opacity: 1; }
+  to { --beam-orbs-opacity: 0; }
+}
+
+[class~="dark"] [data-beam-orbs-beam="on"]::after,
+[class~="dark"] [data-beam-orbs-beam="off"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  clip-path: inset(0 round var(--beam-orbs-radius, 12px));
+  background: radial-gradient(
+        ellipse calc(24px * var(--beam-orbs-w)) calc(28px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100%) calc(100% + 2px),
+        rgba(255, 255, 255, 0.38) 0%,
+        rgba(255, 255, 255, 0.12) 30%,
+        transparent 65%
+      ), radial-gradient(ellipse calc(36px * var(--beam-orbs-w)) calc(36px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100%) calc(100% + 2px), rgb(200, 200, 200), transparent),
+       radial-gradient(ellipse calc(30px * var(--beam-orbs-w)) calc(32px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100% + 39px) calc(100%), rgb(170, 170, 170), transparent),
+       radial-gradient(ellipse calc(33px * var(--beam-orbs-w)) calc(28px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100% - 36px) calc(100% + 2px), rgb(155, 155, 155), transparent),
+       radial-gradient(ellipse calc(29px * var(--beam-orbs-w)) calc(34px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100% - 54px) calc(100%), rgb(185, 185, 185), transparent),
+       radial-gradient(ellipse calc(27px * var(--beam-orbs-w)) calc(30px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100% + 51px) calc(100% - 1px), rgb(165, 165, 165), transparent),
+       radial-gradient(ellipse calc(36px * var(--beam-orbs-w)) calc(24px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100% + 21px) calc(100% + 1px), rgb(180, 180, 180), transparent),
+       radial-gradient(ellipse calc(30px * var(--beam-orbs-w)) calc(22px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100% - 21px) calc(100%), rgb(160, 160, 160), transparent),
+       radial-gradient(ellipse calc(25px * var(--beam-orbs-w)) calc(28px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100% + 66px) calc(100% + 1px), rgb(175, 175, 175), transparent),
+       radial-gradient(ellipse calc(23px * var(--beam-orbs-w)) calc(30px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100% - 66px) calc(100% - 1px), rgb(190, 190, 190), transparent);
+  -webkit-mask:
+    radial-gradient(
+      ellipse calc(78px * var(--beam-orbs-w)) calc(60px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100%) 100%,
+      white 0%, rgba(255, 255, 255, 0.5) 45%, transparent 100%
+    ),
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: source-in, xor;
+  mask:
+    radial-gradient(
+      ellipse calc(78px * var(--beam-orbs-w)) calc(60px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100%) 100%,
+      white 0%, rgba(255, 255, 255, 0.5) 45%, transparent 100%
+    ),
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: intersect, exclude;
+  pointer-events: none;
+  z-index: 2;
+  opacity: calc(var(--beam-orbs-opacity) * var(--beam-orbs-edge) * 1.14 * var(--beam-stroke-opacity, 1) * var(--beam-strength, 1));
+}
+
+[class~="dark"] [data-beam-orbs-beam="on"]::before,
+[class~="dark"] [data-beam-orbs-beam="off"]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(ellipse calc(33px * var(--beam-orbs-w)) calc(30px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100%) calc(100%), rgba(200, 200, 200, 0.48), transparent),
+    radial-gradient(ellipse calc(24px * var(--beam-orbs-w)) calc(26px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100% + 39px) calc(100% - 3px), rgba(170, 170, 170, 0.42), transparent),
+    radial-gradient(ellipse calc(27px * var(--beam-orbs-w)) calc(24px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100% - 36px) calc(100%), rgba(155, 155, 155, 0.48), transparent),
+    radial-gradient(ellipse calc(23px * var(--beam-orbs-w)) calc(28px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100% - 54px) calc(100% - 2px), rgba(185, 185, 185, 0.42), transparent),
+    radial-gradient(ellipse calc(24px * var(--beam-orbs-w)) calc(24px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100% + 51px) calc(100% - 1px), rgba(165, 165, 165, 0.50), transparent),
+    radial-gradient(ellipse calc(30px * var(--beam-orbs-w)) calc(20px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100% + 21px) calc(100%), rgba(180, 180, 180, 0.45), transparent),
+    radial-gradient(ellipse calc(25px * var(--beam-orbs-w)) calc(18px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100% - 21px) calc(100% - 2px), rgba(160, 160, 160, 0.40), transparent),
+    radial-gradient(ellipse calc(21px * var(--beam-orbs-w)) calc(24px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100% + 66px) calc(100%), rgba(175, 175, 175, 0.45), transparent),
+    radial-gradient(ellipse calc(18px * var(--beam-orbs-w)) calc(26px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100% - 66px) calc(100% - 1px), rgba(190, 190, 190, 0.52), transparent);
+  box-shadow: inset 0 0 9px 1px rgba(255, 255, 255, 0.1);
+  -webkit-mask-image:
+    radial-gradient(
+      ellipse calc(78px * var(--beam-orbs-w)) calc(60px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100%) 100%,
+      white 0%, rgba(255, 255, 255, 0.5) 45%, transparent 100%
+    ),
+    linear-gradient(white, transparent 28px, transparent calc(100% - 28px), white),
+    linear-gradient(to right, white, transparent 28px, transparent calc(100% - 28px), white);
+  -webkit-mask-composite: source-in, source-over;
+  mask-image:
+    radial-gradient(
+      ellipse calc(78px * var(--beam-orbs-w)) calc(60px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100%) 100%,
+      white 0%, rgba(255, 255, 255, 0.5) 45%, transparent 100%
+    ),
+    linear-gradient(white, transparent 28px, transparent calc(100% - 28px), white),
+    linear-gradient(to right, white, transparent 28px, transparent calc(100% - 28px), white);
+  mask-composite: intersect, add;
+  pointer-events: none;
+  z-index: 1;
+  opacity: calc(var(--beam-orbs-opacity) * var(--beam-orbs-edge) * 0.70 * var(--beam-inner-opacity, 1) * var(--beam-strength, 1));
+  clip-path: inset(0 round var(--beam-orbs-radius, 12px));
+}
+
+[class~="dark"] [data-beam-orbs-beam] > [data-beam-orbs-bloom] {
+  display: none;
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  clip-path: inset(0 round var(--beam-orbs-radius, 12px));
+  padding: 0;
+  -webkit-mask: radial-gradient(
+    ellipse calc(84px * var(--beam-orbs-w)) calc(110px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100%) 100%,
+    white 0%, rgba(255, 255, 255, 0.5) 35%, transparent 100%
+  );
+  -webkit-mask-composite: source-over;
+  mask: radial-gradient(
+    ellipse calc(84px * var(--beam-orbs-w)) calc(110px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100%) 100%,
+    white 0%, rgba(255, 255, 255, 0.5) 35%, transparent 100%
+  );
+  mask-composite: add;
+  background: radial-gradient(ellipse calc(12px * var(--beam-orbs-spike) * var(--beam-spike-mul, 1)) calc(42px * var(--beam-orbs-h) * var(--beam-spike-mul, 1)) at 8% calc(100% - 2px), rgba(200, 200, 200, 0.14), rgba(200, 200, 200, 0.09) 30%, transparent 88%),
+       radial-gradient(ellipse calc(10px * var(--beam-orbs-spike2) * var(--beam-spike-mul, 1)) calc(35px * var(--beam-orbs-h) * var(--beam-spike-mul, 1)) at 22% calc(100% - 4px), rgba(170, 170, 170, 0.12), rgba(170, 170, 170, 0.06) 50%, transparent 95%),
+       radial-gradient(ellipse calc(14px * (2 - var(--beam-orbs-spike)) * var(--beam-spike-mul, 1)) calc(38px * var(--beam-orbs-h) * var(--beam-spike-mul, 1)) at 36% calc(100% - 3px), rgba(200, 200, 200, 0.14), rgba(200, 200, 200, 0.10) 40%, transparent 90%),
+       radial-gradient(ellipse calc(14px * var(--beam-orbs-spike2) * var(--beam-spike-mul, 1)) calc(28px * var(--beam-orbs-h) * var(--beam-spike-mul, 1)) at 50% calc(100% - 2px), rgba(180, 180, 180, 0.08), rgba(180, 180, 180, 0.03) 55%, transparent 96%),
+       radial-gradient(ellipse calc(12px * (2 - var(--beam-orbs-spike2)) * var(--beam-spike-mul, 1)) calc(40px * var(--beam-orbs-h) * var(--beam-spike-mul, 1)) at 64% calc(100% - 4px), rgba(190, 190, 190, 0.14), rgba(190, 190, 190, 0.10) 35%, transparent 89%),
+       radial-gradient(ellipse calc(7px * var(--beam-orbs-spike) * var(--beam-spike-mul, 1)) calc(45px * var(--beam-orbs-h) * var(--beam-spike-mul, 1)) at 78% calc(100% - 2px), rgba(170, 170, 170, 0.13), rgba(170, 170, 170, 0.04) 48%, transparent 94%),
+       radial-gradient(ellipse calc(10px * (2 - var(--beam-orbs-spike)) * var(--beam-spike-mul, 1)) calc(32px * var(--beam-orbs-h) * var(--beam-spike-mul, 1)) at 92% calc(100% - 3px), rgba(185, 185, 185, 0.14), rgba(185, 185, 185, 0.10) 42%, transparent 91%),
+       radial-gradient(ellipse calc(21px * var(--beam-orbs-spike)) calc(15px * var(--beam-orbs-spike2)) at calc(var(--beam-orbs-x) * 100%) calc(100% + 1px), rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.45) 20%, rgba(255, 255, 255, 0.25) 50%, transparent 100%),
+       radial-gradient(ellipse calc(42px * var(--beam-orbs-w)) calc(40px * var(--beam-orbs-h)) at calc(var(--beam-orbs-x) * 100%) 100%, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.06) 25%, rgba(255, 255, 255, 0.015) 55%, transparent 80%);
+  filter: blur(6px);
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0;
+}
+
+[class~="dark"] [data-beam-orbs-beam="on"] [data-beam-orbs-bloom],
+[class~="dark"] [data-beam-orbs-beam="off"] [data-beam-orbs-bloom] {
+  display: block;
+  opacity: calc(var(--beam-orbs-opacity) * var(--beam-orbs-edge) * 0.80 * var(--beam-bloom-opacity, 1) * var(--beam-strength, 1));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-beam-orbs-beam="on"] {
+    animation: none;
+    --beam-orbs-x: 0.5;
+    --beam-orbs-edge: 1;
+    --beam-orbs-opacity: 1;
+  }
+
+  [data-beam-orbs-beam="off"] {
+    animation: none;
+  }
+}
